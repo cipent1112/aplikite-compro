@@ -273,6 +273,8 @@ h1{
 const segments = location.pathname.split('/');
 const appId = segments[2];
 
+console.log(appId);
+
 const deepLink = `aplikite://app/${appId}`;
 
 document.getElementById('openAppBtn').href = deepLink;
