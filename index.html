@@ -1,89 +1,285 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aplikite</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            text-align: center;
-            background: #f5f5f5;
-            margin: 0;
-        }
+<title>Aplikite</title>
 
-        .container {
-            max-width: 400px;
-            padding: 24px;
-        }
+<link rel="icon" href="./favicon.ico">
 
-        .logo {
-            font-size: 32px;
-            font-weight: bold;
-            color: #2563eb;
-            margin-bottom: 16px;
-        }
+<style>
 
-        .btn {
-            display: block;
-            text-decoration: none;
-            padding: 14px;
-            margin-top: 12px;
-            border-radius: 10px;
-            color: white;
-            background: #2563eb;
-        }
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
-        .btn-secondary {
-            background: #16a34a;
-        }
-    </style>
+body{
+    font-family: Inter, Arial, sans-serif;
+    background:#f8fbff;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow-x:hidden;
+}
+
+body::before{
+    content:'';
+    position:fixed;
+    width:500px;
+    height:500px;
+    border-radius:50%;
+    background:#eaf3ff;
+    bottom:-250px;
+    left:-100px;
+}
+
+body::after{
+    content:'';
+    position:fixed;
+    width:600px;
+    height:600px;
+    border-radius:50%;
+    background:#edf6ff;
+    bottom:-300px;
+    right:-200px;
+}
+
+.wrapper{
+    width:100%;
+    max-width:720px;
+    padding:40px 20px;
+    text-align:center;
+    position:relative;
+    z-index:2;
+}
+
+.logo{
+    width:160px;
+    margin:auto;
+    display:block;
+}
+
+h1{
+    font-size:72px;
+    font-weight:800;
+    color:#081b4b;
+    margin-top:10px;
+}
+
+.subtitle{
+    margin-top:10px;
+    font-size:20px;
+    color:#667085;
+    line-height:1.6;
+}
+
+.status-card{
+    margin-top:40px;
+    background:white;
+    border-radius:24px;
+    padding:30px;
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+    display:flex;
+    align-items:center;
+    gap:20px;
+    text-align:left;
+}
+
+.loader{
+    width:50px;
+    height:50px;
+    border-radius:50%;
+    border:4px solid #dbeafe;
+    border-top-color:#2563ff;
+    animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+.status-title{
+    font-size:28px;
+    font-weight:700;
+    color:#111827;
+}
+
+.status-desc{
+    margin-top:8px;
+    color:#6b7280;
+}
+
+.btn{
+    width:100%;
+    display:block;
+    text-decoration:none;
+    border-radius:20px;
+    padding:24px;
+    font-size:32px;
+    font-weight:700;
+    margin-top:24px;
+}
+
+.open-btn{
+    background:linear-gradient(
+        135deg,
+        #2764ff,
+        #2450ff
+    );
+    color:white;
+}
+
+.download-btn{
+    background:#22c55e;
+    color:white;
+}
+
+.security-card{
+    margin-top:50px;
+    background:white;
+    border-radius:24px;
+    padding:28px;
+    text-align:left;
+    display:flex;
+    gap:20px;
+    align-items:center;
+    box-shadow:0 10px 30px rgba(0,0,0,.05);
+}
+
+.shield{
+    font-size:50px;
+}
+
+.security-title{
+    font-size:28px;
+    font-weight:700;
+    color:#0f172a;
+}
+
+.security-desc{
+    margin-top:6px;
+    color:#64748b;
+    line-height:1.6;
+}
+
+.footer{
+    margin-top:40px;
+    color:#64748b;
+}
+
+@media(max-width:768px){
+
+    h1{
+        font-size:48px;
+    }
+
+    .btn{
+        font-size:22px;
+        padding:18px;
+    }
+
+    .status-title{
+        font-size:22px;
+    }
+
+    .security-title{
+        font-size:20px;
+    }
+
+    .logo{
+        width:120px;
+    }
+}
+
+</style>
 </head>
 <body>
 
-<div class="container">
-    <div class="logo">Aplikite</div>
+<div class="wrapper">
 
-    <h2>Buka di Aplikite</h2>
+    <img src="./logo-single.png"
+         alt="Aplikite"
+         class="logo">
 
-    <p id="info">
-        Sedang membuka aplikasi...
-    </p>
+    <h1>Aplikite</h1>
 
-    <a id="openAppBtn" class="btn">
-        Buka Aplikite
+    <div class="subtitle">
+        Aplikasi terpercaya untuk menemukan<br>
+        berbagai aplikasi terbaik untuk Anda.
+    </div>
+
+    <div class="status-card">
+
+        <div class="loader"></div>
+
+        <div>
+            <div class="status-title">
+                Membuka Aplikite...
+            </div>
+
+            <div class="status-desc">
+                Jika tidak terbuka otomatis,
+                silakan klik tombol di bawah.
+            </div>
+        </div>
+
+    </div>
+
+    <a id="openAppBtn"
+       class="btn open-btn">
+       ↗ Buka di Aplikite
     </a>
 
-    <a
-        href="https://play.google.com/store/apps/details?id=com.aplikite.app"
-        class="btn btn-secondary">
-        Download Aplikite
+    <a href="https://play.google.com/store/apps/details?id=com.aplikite.app"
+       class="btn download-btn">
+       🤖 Download Aplikite
+       <br>
+       <small style="font-size:16px;font-weight:500;">
+           Dapatkan di Google Play
+       </small>
     </a>
+
+    <div class="security-card">
+
+        <div class="shield">🛡️</div>
+
+        <div>
+            <div class="security-title">
+                Aman & Terpercaya
+            </div>
+
+            <div class="security-desc">
+                Aplikite selalu memberikan aplikasi
+                terbaik dan aman untuk perangkat Anda.
+            </div>
+        </div>
+
+    </div>
+
+    <div class="footer">
+        © 2025 Aplikite. All rights reserved.
+    </div>
+
 </div>
 
 <script>
 
-    const path = window.location.pathname;
+const segments = location.pathname.split('/');
+const appId = segments[2];
 
-    // URL:
-    // /app/12345
+const deepLink = `aplikite://app/${appId}`;
 
-    const segments = path.split('/');
-    const appId = segments[2];
+document.getElementById('openAppBtn').href = deepLink;
 
-    const deepLink = `aplikite://app/${appId}`;
-
-    document
-        .getElementById('openAppBtn')
-        .href = deepLink;
-
-    // Auto open app
-    window.location.href = deepLink;
+setTimeout(()=>{
+    location.href = deepLink;
+},1000);
 
 </script>
 
