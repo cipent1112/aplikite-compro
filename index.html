@@ -3,286 +3,289 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
-<title>Aplikite</title>
-
+<title>Aplikite &mdash; Temukan Aplikasi Terbaik</title>
+<meta name="description" content="Platform terpercaya untuk menemukan, mengunduh, dan menikmati aplikasi terbaik untuk perangkat Android Anda.">
 <link rel="icon" href="/favicon.ico">
-
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: { sans: ['Inter', 'Arial', 'sans-serif'] },
+        borderRadius: { '4xl': '2rem', '5xl': '2.5rem' },
+      }
+    }
+  }
+</script>
 <style>
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
-body{
-    font-family: Inter, Arial, sans-serif;
-    background:#f8fbff;
-    min-height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    overflow-x:hidden;
-}
-
-body::before{
-    content:'';
-    position:fixed;
-    width:500px;
-    height:500px;
-    border-radius:50%;
-    background:#eaf3ff;
-    bottom:-250px;
-    left:-100px;
-}
-
-body::after{
-    content:'';
-    position:fixed;
-    width:600px;
-    height:600px;
-    border-radius:50%;
-    background:#edf6ff;
-    bottom:-300px;
-    right:-200px;
-}
-
-.wrapper{
-    width:100%;
-    max-width:720px;
-    padding:40px 20px;
-    text-align:center;
-    position:relative;
-    z-index:2;
-}
-
-.logo{
-    width:160px;
-    margin:auto;
-    display:block;
-}
-
-h1{
-    font-size:72px;
-    font-weight:800;
-    color:#081b4b;
-    margin-top:10px;
-}
-
-.subtitle{
-    margin-top:10px;
-    font-size:20px;
-    color:#667085;
-    line-height:1.6;
-}
-
-.status-card{
-    margin-top:40px;
-    background:white;
-    border-radius:24px;
-    padding:30px;
-    box-shadow:0 10px 30px rgba(0,0,0,.08);
-    display:flex;
-    align-items:center;
-    gap:20px;
-    text-align:left;
-}
-
-.loader{
-    width:50px;
-    height:50px;
-    border-radius:50%;
-    border:4px solid #dbeafe;
-    border-top-color:#2563ff;
-    animation:spin 1s linear infinite;
-}
-
-@keyframes spin{
-    to{
-        transform:rotate(360deg);
-    }
-}
-
-.status-title{
-    font-size:28px;
-    font-weight:700;
-    color:#111827;
-}
-
-.status-desc{
-    margin-top:8px;
-    color:#6b7280;
-}
-
-.btn{
-    width:100%;
-    display:block;
-    text-decoration:none;
-    border-radius:20px;
-    padding:24px;
-    font-size:32px;
-    font-weight:700;
-    margin-top:24px;
-}
-
-.open-btn{
-    background:linear-gradient(
-        135deg,
-        #2764ff,
-        #2450ff
-    );
-    color:white;
-}
-
-.download-btn{
-    background:#22c55e;
-    color:white;
-}
-
-.security-card{
-    margin-top:50px;
-    background:white;
-    border-radius:24px;
-    padding:28px;
-    text-align:left;
-    display:flex;
-    gap:20px;
-    align-items:center;
-    box-shadow:0 10px 30px rgba(0,0,0,.05);
-}
-
-.shield{
-    font-size:50px;
-}
-
-.security-title{
-    font-size:28px;
-    font-weight:700;
-    color:#0f172a;
-}
-
-.security-desc{
-    margin-top:6px;
-    color:#64748b;
-    line-height:1.6;
-}
-
-.footer{
-    margin-top:40px;
-    color:#64748b;
-}
-
-@media(max-width:768px){
-
-    h1{
-        font-size:48px;
-    }
-
-    .btn{
-        font-size:22px;
-        padding:18px;
-    }
-
-    .status-title{
-        font-size:22px;
-    }
-
-    .security-title{
-        font-size:20px;
-    }
-
-    .logo{
-        width:120px;
-    }
-}
-
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+  .loader  { animation: spin 1s linear infinite; }
+  .floating { animation: float 3s ease-in-out infinite; }
+  /* decorative background blobs */
+  body::before, body::after {
+    content: ''; position: fixed; border-radius: 50%;
+    z-index: 0; pointer-events: none; opacity: 0.6;
+  }
+  body::before {
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, #ede9fe, transparent 70%);
+    top: -250px; left: -200px;
+  }
+  body::after {
+    width: 800px; height: 800px;
+    background: radial-gradient(circle, #dbeafe, transparent 70%);
+    bottom: -300px; right: -250px;
+  }
+  html { scroll-padding-top: 72px; scroll-behavior: smooth; }
 </style>
 </head>
-<body>
 
-<div class="wrapper">
+<body class="font-sans bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 min-h-screen overflow-x-hidden text-slate-800">
 
-    <img src="/logo-single.png"
-         alt="Aplikite"
-         class="logo">
-
-    <h1>Aplikite</h1>
-
-    <div class="subtitle">
-        Aplikasi terpercaya untuk menemukan<br>
-        berbagai aplikasi terbaik untuk Anda.
+<!-- =========================================================
+     NAVBAR
+========================================================= -->
+<nav class="fixed top-0 inset-x-0 z-50 bg-white/70 backdrop-blur-md border-b border-blue-100">
+  <div class="max-w-5xl mx-auto px-5 py-3 flex items-center justify-between">
+    <div class="flex items-center gap-2.5">
+      <img src="/logo-single.png" alt="Aplikite" class="w-8 h-8 object-contain">
+      <span class="text-lg font-bold text-slate-800">Aplikite</span>
     </div>
-
-    <div class="status-card">
-
-        <div class="loader"></div>
-
-        <div>
-            <div class="status-title">
-                Membuka Aplikite...
-            </div>
-
-            <div class="status-desc">
-                Jika tidak terbuka otomatis,
-                silakan klik tombol di bawah.
-            </div>
-        </div>
-
-    </div>
-
-    <a id="openAppBtn"
-       class="btn open-btn">
-       ↗ Buka di Aplikite
-    </a>
-
     <a href="https://play.google.com/store/apps/details?id=com.aplikite.app"
-       class="btn download-btn">
-       🤖 Download Aplikite
-       <br>
-       <small style="font-size:16px;font-weight:500;">
-           Dapatkan di Google Play
-       </small>
+       class="inline-flex items-center gap-1.5 bg-emerald-500 hover:bg-emerald-600 active:scale-95
+              text-white text-sm font-semibold px-4 py-2 rounded-full transition-all duration-150 no-underline">
+      <i data-lucide="download" class="w-4 h-4"></i> Download
     </a>
+  </div>
+</nav>
 
-    <div class="security-card">
+<!-- =========================================================
+     HERO
+========================================================= -->
+<section class="relative z-10 pt-28 pb-20 px-5 text-center">
+  <div class="max-w-2xl mx-auto">
 
-        <div class="shield">🛡️</div>
+    <div class="inline-flex items-center gap-2 bg-indigo-50 border border-indigo-100 text-indigo-600
+                text-xs font-semibold px-4 py-1.5 rounded-full mb-6">
+      <span class="w-1.5 h-1.5 rounded-full bg-indigo-500 inline-block"></span>
+      Platform Aplikasi Android #1
+    </div>
 
-        <div>
-            <div class="security-title">
-                Aman & Terpercaya
-            </div>
+    <img src="/logo-single.png" alt="Aplikite" class="w-20 mx-auto mb-5 floating">
 
-            <div class="security-desc">
-                Aplikite selalu memberikan aplikasi
-                terbaik dan aman untuk perangkat Anda.
-            </div>
+    <h1 class="text-5xl sm:text-6xl lg:text-7xl font-black leading-tight tracking-tight">
+      <span class="bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">
+        Temukan Aplikasi
+      </span><br>
+      Terbaik di Sini
+    </h1>
+
+    <p class="mt-5 text-lg sm:text-xl text-slate-500 leading-relaxed max-w-lg mx-auto">
+      Platform terpercaya untuk menemukan, mengunduh, dan menikmati
+      aplikasi terbaik untuk perangkat Android Anda.
+    </p>
+
+    <!-- Redirect status card -->
+    <div class="mt-10 bg-white/80 backdrop-blur-sm border border-blue-100 rounded-3xl px-6 py-5
+                shadow-sm flex items-center gap-4 text-left max-w-md mx-auto">
+      <div class="loader shrink-0 w-11 h-11 rounded-full border-4 border-indigo-100 border-t-indigo-500"></div>
+      <div>
+        <p class="font-bold text-slate-800">Membuka Aplikite&hellip;</p>
+        <p class="text-sm text-slate-400 mt-0.5">
+          Jika tidak terbuka otomatis, gunakan tombol di bawah.
+        </p>
+      </div>
+    </div>
+
+    <!-- CTA buttons -->
+    <div class="mt-5 flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+      <a id="openAppBtn"
+         class="flex-1 flex items-center justify-center gap-2 rounded-2xl px-6 py-4
+                bg-gradient-to-br from-indigo-500 to-purple-500
+                text-white font-bold text-lg
+                shadow-lg shadow-indigo-200
+                hover:brightness-110 active:scale-[0.97] transition-all duration-150 no-underline">
+        <i data-lucide="external-link" class="w-5 h-5"></i>&nbsp;Buka di Aplikite
+      </a>
+      <a href="https://play.google.com/store/apps/details?id=com.aplikite.app"
+         class="flex-1 flex items-center justify-center gap-2 rounded-2xl px-6 py-4
+                bg-emerald-500 text-white font-bold text-lg
+                shadow-lg shadow-emerald-100
+                hover:brightness-110 active:scale-[0.97] transition-all duration-150 no-underline">
+        <i data-lucide="play-circle" class="w-5 h-5"></i>&nbsp;Google Play
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- =========================================================
+     FEATURES
+========================================================= -->
+<section class="relative z-10 py-20 px-5">
+  <div class="max-w-5xl mx-auto">
+
+    <div class="text-center mb-12">
+      <span class="text-indigo-500 font-semibold text-sm uppercase tracking-widest">Kenapa Aplikite?</span>
+      <h2 class="mt-2 text-3xl sm:text-4xl font-extrabold text-slate-800">Semua yang Anda Butuhkan</h2>
+      <p class="mt-3 text-slate-500 max-w-md mx-auto">Kami hadir untuk membuat pengalaman menemukan aplikasi menjadi lebih mudah dan menyenangkan.</p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+
+      <div class="bg-white/80 backdrop-blur-sm border border-blue-50 rounded-3xl p-6 shadow-sm
+                  hover:shadow-md hover:-translate-y-1 transition-all duration-200">
+        <div class="w-12 h-12 bg-indigo-50 rounded-2xl flex items-center justify-center mb-4"><i data-lucide="search" class="w-6 h-6 text-indigo-500"></i></div>
+        <h3 class="font-bold text-slate-800 mb-1.5">Temukan Aplikasi</h3>
+        <p class="text-sm text-slate-500 leading-relaxed">Ribuan aplikasi tersedia, dari produktivitas hingga hiburan.</p>
+      </div>
+
+      <div class="bg-white/80 backdrop-blur-sm border border-yellow-50 rounded-3xl p-6 shadow-sm
+                  hover:shadow-md hover:-translate-y-1 transition-all duration-200">
+        <div class="w-12 h-12 bg-yellow-50 rounded-2xl flex items-center justify-center mb-4"><i data-lucide="star" class="w-6 h-6 text-yellow-500"></i></div>
+        <h3 class="font-bold text-slate-800 mb-1.5">Rating Terpercaya</h3>
+        <p class="text-sm text-slate-500 leading-relaxed">Ulasan dan rating nyata dari jutaan pengguna aktif.</p>
+      </div>
+
+      <div class="bg-white/80 backdrop-blur-sm border border-emerald-50 rounded-3xl p-6 shadow-sm
+                  hover:shadow-md hover:-translate-y-1 transition-all duration-200">
+        <div class="w-12 h-12 bg-emerald-50 rounded-2xl flex items-center justify-center mb-4"><i data-lucide="shield-check" class="w-6 h-6 text-emerald-500"></i></div>
+        <h3 class="font-bold text-slate-800 mb-1.5">Aman &amp; Terverifikasi</h3>
+        <p class="text-sm text-slate-500 leading-relaxed">Setiap aplikasi diverifikasi keamanannya sebelum tayang.</p>
+      </div>
+
+      <div class="bg-white/80 backdrop-blur-sm border border-purple-50 rounded-3xl p-6 shadow-sm
+                  hover:shadow-md hover:-translate-y-1 transition-all duration-200">
+        <div class="w-12 h-12 bg-purple-50 rounded-2xl flex items-center justify-center mb-4"><i data-lucide="zap" class="w-6 h-6 text-purple-500"></i></div>
+        <h3 class="font-bold text-slate-800 mb-1.5">Update Terbaru</h3>
+        <p class="text-sm text-slate-500 leading-relaxed">Selalu dapatkan versi terbaru aplikasi favorit Anda.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     APP PREVIEW
+========================================================= -->
+<section class="relative z-10 py-20 px-5 text-center">
+  <div class="max-w-4xl mx-auto">
+
+    <span class="text-purple-500 font-semibold text-sm uppercase tracking-widest">Preview</span>
+    <h2 class="mt-2 text-3xl sm:text-4xl font-extrabold text-slate-800">Tampilan Aplikite</h2>
+    <p class="mt-3 text-slate-500 max-w-sm mx-auto">Antarmuka yang bersih, intuitif, dan mudah digunakan.</p>
+
+    <div class="mt-12 relative flex items-center justify-center gap-6">
+
+      <!-- Left stat badge -->
+      <div class="hidden sm:flex flex-col items-center bg-white/80 backdrop-blur-sm border border-blue-100
+                  rounded-2xl px-5 py-4 shadow-sm self-start mt-16">
+        <span class="text-2xl font-black text-indigo-600">10K+</span>
+        <span class="text-xs text-slate-500 mt-0.5">Aplikasi</span>
+      </div>
+
+      <!-- Phone mockup -->
+      <div class="relative w-52 h-[420px] bg-gradient-to-b from-indigo-100 to-purple-100
+                  rounded-[3rem] border-4 border-white shadow-2xl shadow-indigo-200/50 overflow-hidden floating">
+        <!-- Status bar -->
+        <div class="flex justify-between items-center px-5 pt-3 pb-1">
+          <span class="text-[10px] font-semibold text-slate-500">9:41</span>
+          <div class="w-16 h-4 bg-white/60 rounded-full"></div>
+          <span class="text-[10px] font-semibold text-slate-500">&#128267;</span>
         </div>
+        <!-- Search bar -->
+        <div class="mx-4 mt-2 bg-white/70 rounded-2xl px-3 py-2 flex items-center gap-2">
+          <span class="text-xs">&#128269;</span>
+          <span class="text-[10px] text-slate-400">Cari aplikasi...</span>
+        </div>
+        <!-- App grid -->
+        <div class="grid grid-cols-3 gap-3 px-4 mt-4">
+          <div class="bg-white/70 rounded-2xl p-2 flex flex-col items-center gap-1">
+            <span class="text-xl">&#127926;</span>
+            <span class="text-[8px] text-slate-500">Musik</span>
+          </div>
+          <div class="bg-white/70 rounded-2xl p-2 flex flex-col items-center gap-1">
+            <span class="text-xl">&#127757;</span>
+            <span class="text-[8px] text-slate-500">Maps</span>
+          </div>
+          <div class="bg-white/70 rounded-2xl p-2 flex flex-col items-center gap-1">
+            <span class="text-xl">&#128248;</span>
+            <span class="text-[8px] text-slate-500">Kamera</span>
+          </div>
+          <div class="bg-white/70 rounded-2xl p-2 flex flex-col items-center gap-1">
+            <span class="text-xl">&#127918;</span>
+            <span class="text-[8px] text-slate-500">Game</span>
+          </div>
+          <div class="bg-indigo-400/80 rounded-2xl p-2 flex flex-col items-center gap-1">
+            <span class="text-xl">&#128640;</span>
+            <span class="text-[8px] text-white">Aplikite</span>
+          </div>
+          <div class="bg-white/70 rounded-2xl p-2 flex flex-col items-center gap-1">
+            <span class="text-xl">&#128218;</span>
+            <span class="text-[8px] text-slate-500">Buku</span>
+          </div>
+        </div>
+        <!-- Featured card -->
+        <div class="mx-4 mt-4 bg-gradient-to-r from-indigo-400 to-purple-400 rounded-2xl px-3 py-2.5">
+          <p class="text-[9px] text-white/80 font-medium">UNGGULAN HARI INI</p>
+          <p class="text-[11px] text-white font-bold mt-0.5">Aplikasi Produktivitas #1</p>
+          <p class="text-[8px] text-white/70 mt-0.5">&#11088; 4.9 &bull; 2M unduhan</p>
+        </div>
+      </div>
+
+      <!-- Right stat badge -->
+      <div class="hidden sm:flex flex-col items-center bg-white/80 backdrop-blur-sm border border-purple-100
+                  rounded-2xl px-5 py-4 shadow-sm self-end mb-16">
+        <span class="text-2xl font-black text-purple-600">4.9&#11088;</span>
+        <span class="text-xs text-slate-500 mt-0.5">Rating</span>
+      </div>
 
     </div>
+  </div>
+</section>
 
-    <div class="footer">
-        © 2025 Aplikite. All rights reserved.
-    </div>
+<!-- =========================================================
+     CTA BAND
+========================================================= -->
+<section class="relative z-10 px-5 pb-16">
+  <div class="max-w-3xl mx-auto bg-gradient-to-br from-indigo-500 to-purple-600
+              rounded-3xl py-14 px-8 text-center shadow-2xl shadow-indigo-200">
+    <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Mulai Gunakan Aplikite Sekarang</h2>
+    <p class="mt-3 text-indigo-100 text-lg">Gratis, aman, dan selalu diperbarui.</p>
+    <a href="https://play.google.com/store/apps/details?id=com.aplikite.app"
+       class="mt-8 inline-flex items-center gap-2 bg-white text-indigo-600 font-bold text-lg
+              px-8 py-4 rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-0.5
+              active:scale-95 transition-all duration-150 no-underline">
+      <i data-lucide="play-circle" class="w-5 h-5"></i>&nbsp;Download di Google Play
+    </a>
+  </div>
+</section>
 
-</div>
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+<footer class="relative z-10 border-t border-blue-100 py-8 text-center">
+  <p class="text-sm text-slate-400">&copy; 2025 Aplikite. All rights reserved.</p>
+</footer>
 
 <script>
+  const segments = location.pathname.split('/');
+  const appId = segments[2];
 
-const segments = location.pathname.split('/');
-const appId = segments[2];
+  const deepLink = `aplikite://app/${appId}`;
 
-console.log(appId);
+  document.getElementById('openAppBtn').href = deepLink;
 
-const deepLink = `aplikite://app/${appId}`;
-
-document.getElementById('openAppBtn').href = deepLink;
-
-setTimeout(()=>{
+  setTimeout(() => {
     location.href = deepLink;
-},1000);
+  }, 1000);
 
+  lucide.createIcons();
 </script>
 
 </body>
