@@ -1,292 +1,1347 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Aplikite &mdash; Temukan Aplikasi Terbaik</title>
-<meta name="description" content="Platform terpercaya untuk menemukan, mengunduh, dan menikmati aplikasi terbaik untuk perangkat Android Anda.">
-<link rel="icon" href="/favicon.ico">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-<script>
-  tailwind.config = {
-    theme: {
-      extend: {
-        fontFamily: { sans: ['Inter', 'Arial', 'sans-serif'] },
-        borderRadius: { '4xl': '2rem', '5xl': '2.5rem' },
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aplikite</title>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    :root {
+      /* Core */
+      --bg: #0d0c0a;
+      --bg-2: #141210;
+      --surface: rgba(255,220,160,0.04);
+      --surface-hover: rgba(255,220,160,0.08);
+      --border: rgba(255,200,120,0.1);
+      --border-focus: rgba(255,180,60,0.3);
+      --text-primary: #f8f2e8;
+      --text-secondary: rgba(248,242,232,0.6);
+      --text-muted: rgba(248,242,232,0.35);
+      /* Brand — amber/orange dari logo */
+      --brand: #f97316;
+      --brand-hover: #ea6c0a;
+      --brand-glow: rgba(249,115,22,0.4);
+      --brand-subtle: rgba(249,115,22,0.12);
+      --brand-2: #f59e0b;
+      /* Status */
+      --success: #4ade80;
+      --warning: #fbbf24;
+      /* Layout */
+      --nav-height: 64px;
+      --max-width: 1100px;
+      --radius: 16px;
+      --radius-sm: 10px;
+      --transition: 0.2s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    html, body { height: 100%; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background-color: var(--bg);
+      color: var(--text-primary);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
+
+    /* ─── Shared bg gradient ─── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        radial-gradient(ellipse 80% 60% at 50% -10%, rgba(249,115,22,0.1) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 85% 90%, rgba(245,158,11,0.06) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ─── Navbar ─── */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--nav-height);
+      z-index: 100;
+      background: rgba(10,10,15,0.8);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 16px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text-primary);
+      font-weight: 700;
+      font-size: 17px;
+      letter-spacing: -0.3px;
+    }
+
+    .nav-logo img {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      flex-shrink: 0;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 500;
+      padding: 6px 10px;
+      border-radius: 8px;
+      transition: all var(--transition);
+      white-space: nowrap;
+    }
+
+    .nav-links a:hover, .nav-links a.active {
+      color: var(--text-primary);
+      background: var(--surface-hover);
+    }
+
+    .nav-cta {
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 600;
+      font-family: inherit;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      outline: none;
+      transition: all var(--transition);
+      letter-spacing: -0.1px;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--brand) 0%, var(--brand-2) 100%);
+      color: #fff;
+      box-shadow: 0 4px 16px var(--brand-glow);
+    }
+    .btn-primary:hover {
+      background: linear-gradient(135deg, var(--brand-hover) 0%, var(--brand) 100%);
+      box-shadow: 0 6px 24px var(--brand-glow);
+      transform: translateY(-1px);
+    }
+    .btn-primary:active { transform: translateY(0); }
+
+    .btn-secondary {
+      background: var(--surface);
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover {
+      background: var(--surface-hover);
+      border-color: var(--border-focus);
+      transform: translateY(-1px);
+    }
+    .btn-secondary:active { transform: translateY(0); }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-secondary);
+      padding: 10px 16px;
+    }
+    .btn-ghost:hover {
+      color: var(--text-primary);
+      background: var(--surface);
+    }
+
+    .btn-lg {
+      padding: 14px 28px;
+      font-size: 16px;
+    }
+
+    /* Nav CTA mobile: compact */
+    @media (max-width: 500px) {
+      .nav-cta .btn {
+        padding: 8px 14px;
+        font-size: 13px;
       }
     }
-  }
-</script>
-<style>
-  @keyframes spin { to { transform: rotate(360deg); } }
-  @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-  .loader  { animation: spin 1s linear infinite; }
-  .floating { animation: float 3s ease-in-out infinite; }
-  /* decorative background blobs */
-  body::before, body::after {
-    content: ''; position: fixed; border-radius: 50%;
-    z-index: 0; pointer-events: none; opacity: 0.6;
-  }
-  body::before {
-    width: 700px; height: 700px;
-    background: radial-gradient(circle, #ede9fe, transparent 70%);
-    top: -250px; left: -200px;
-  }
-  body::after {
-    width: 800px; height: 800px;
-    background: radial-gradient(circle, #dbeafe, transparent 70%);
-    bottom: -300px; right: -250px;
-  }
-  html { scroll-padding-top: 72px; scroll-behavior: smooth; }
-</style>
+
+    @media (max-width: 400px) {
+      .nav-links a { padding: 6px 8px; }
+      .nav-logo { font-size: 15px; }
+    }
+
+    /* ─── Page wrapper ─── */
+    #app {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ─── Footer ─── */
+    .footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 24px;
+      margin-top: 80px;
+    }
+
+    .footer-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: var(--text-secondary);
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .footer-logo img {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .footer-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 13px;
+      transition: color var(--transition);
+    }
+
+    .footer-links a:hover { color: var(--text-secondary); }
+
+    .footer-copy {
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    /* ─── Loading placeholder ─── */
+    .page-loading {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    /* ─── Fade-in ─── */
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up {
+      animation: fade-up 0.4s cubic-bezier(0.4,0,0.2,1) both;
+    }
+
+    /* ─── Landing: Hero ─── */
+    .hero {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 100px 24px 80px;
+      text-align: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border: 1px solid rgba(249,115,22,0.35);
+      background: rgba(249,115,22,0.1);
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #fdba74;
+      margin-bottom: 32px;
+    }
+
+    .hero-badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--brand);
+      box-shadow: 0 0 6px var(--brand);
+    }
+
+    .hero h1 {
+      font-size: clamp(36px, 6vw, 64px);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -2px;
+      color: var(--text-primary);
+      margin-bottom: 24px;
+    }
+
+    .hero h1 .gradient-text {
+      background: linear-gradient(135deg, #60a5fa 0%, #818cf8 50%, #a78bfa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: clamp(16px, 2vw, 20px);
+      color: var(--text-secondary);
+      line-height: 1.7;
+      max-width: 560px;
+      margin: 0 auto 40px;
+      font-weight: 400;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .hero-note {
+      margin-top: 20px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    /* ─── Landing: Features ─── */
+    .section {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 80px 24px;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .section-label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #60a5fa;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 700;
+      letter-spacing: -1px;
+      color: var(--text-primary);
+      margin-bottom: 16px;
+    }
+
+    .section-desc {
+      font-size: 16px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+
+    .feature-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      transition: all var(--transition);
+    }
+
+    .feature-card:hover {
+      background: var(--surface-hover);
+      border-color: var(--border-focus);
+      transform: translateY(-2px);
+    }
+
+    .feature-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: var(--brand-subtle);
+      border: 1px solid rgba(37,99,235,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      font-size: 20px;
+    }
+
+    .feature-card h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+      letter-spacing: -0.3px;
+    }
+
+    .feature-card p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* ─── Landing: CTA Banner ─── */
+    .cta-banner {
+      margin: 0 24px 80px;
+      max-width: calc(var(--max-width) - 48px);
+      margin-left: auto;
+      margin-right: auto;
+      background: linear-gradient(135deg, rgba(37,99,235,0.15) 0%, rgba(99,37,235,0.1) 100%);
+      border: 1px solid rgba(37,99,235,0.25);
+      border-radius: 24px;
+      padding: 48px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+
+    .cta-banner-text h2 {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .cta-banner-text p {
+      font-size: 15px;
+      color: var(--text-secondary);
+    }
+
+    .cta-banner-text .version-chip {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 3px 10px;
+      background: rgba(37,99,235,0.15);
+      border: 1px solid rgba(37,99,235,0.3);
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #93b4ff;
+    }
+
+    /* ─── Download page ─── */
+    .page-hero {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 64px 24px 48px;
+    }
+
+    .page-hero h1 {
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 800;
+      letter-spacing: -1.5px;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+    }
+
+    .page-hero p {
+      font-size: 16px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      max-width: 520px;
+    }
+
+    .latest-release {
+      max-width: var(--max-width);
+      margin: 0 auto 48px;
+      padding: 0 24px;
+    }
+
+    .release-card-latest {
+      background: linear-gradient(135deg, rgba(37,99,235,0.12) 0%, rgba(99,37,235,0.08) 100%);
+      border: 1px solid rgba(37,99,235,0.25);
+      border-radius: 24px;
+      padding: 40px;
+    }
+
+    .release-card-latest .release-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+
+    .release-version {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .badge-latest {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 100px;
+      background: rgba(34,197,94,0.15);
+      border: 1px solid rgba(34,197,94,0.3);
+      color: #4ade80;
+    }
+
+    .release-meta {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+
+    .release-changelog {
+      margin-bottom: 28px;
+    }
+
+    .release-changelog h4 {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    .changelog-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .changelog-list li {
+      font-size: 14px;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      line-height: 1.5;
+    }
+
+    .changelog-list li::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--brand);
+      flex-shrink: 0;
+      margin-top: 6px;
+    }
+
+    .release-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .file-size {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    /* History table */
+    .version-history {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    .version-history h2 {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: var(--text-primary);
+      margin-bottom: 20px;
+    }
+
+    .history-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .history-table th {
+      text-align: left;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .history-table td {
+      padding: 14px 16px;
+      font-size: 14px;
+      color: var(--text-secondary);
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    .history-table tr:last-child td { border-bottom: none; }
+
+    .history-table td:first-child {
+      font-weight: 600;
+      color: var(--text-primary);
+      white-space: nowrap;
+    }
+
+    .history-table .dl-link {
+      color: #60a5fa;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 13px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .history-table .dl-link:hover { text-decoration: underline; }
+
+    .tag-new {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      background: rgba(34,197,94,0.1);
+      color: #4ade80;
+      border: 1px solid rgba(34,197,94,0.2);
+      margin-left: 6px;
+    }
+
+    /* ─── Specs page ─── */
+    .specs-grid {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 24px 48px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .spec-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+    }
+
+    .spec-card.recommended {
+      background: linear-gradient(135deg, rgba(37,99,235,0.08) 0%, rgba(99,37,235,0.05) 100%);
+      border-color: rgba(37,99,235,0.25);
+    }
+
+    .spec-card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .spec-card-icon {
+      font-size: 24px;
+    }
+
+    .spec-card-header h3 {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      color: var(--text-primary);
+    }
+
+    .spec-card-header p {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .spec-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .spec-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      gap: 16px;
+    }
+
+    .spec-row:last-child { border-bottom: none; }
+
+    .spec-label {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 500;
+      flex-shrink: 0;
+    }
+
+    .spec-value {
+      font-size: 14px;
+      color: var(--text-primary);
+      font-weight: 600;
+      text-align: right;
+    }
+
+    .specs-extra {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 24px 80px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .extra-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+
+    .extra-card h4 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+      font-size: 12px;
+      margin-bottom: 14px;
+    }
+
+    .extra-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .extra-tag {
+      padding: 5px 12px;
+      background: var(--surface-hover);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      font-family: monospace;
+    }
+
+    /* ─── Redirect page ─── */
+    .redirect-wrap {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+    }
+
+    .redirect-card {
+      width: 100%;
+      max-width: 420px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 40px 32px;
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.02) inset, 0 32px 64px rgba(0,0,0,0.5);
+      animation: fade-up 0.4s cubic-bezier(0.4,0,0.2,1) both;
+    }
+
+    .redirect-logo {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 28px;
+    }
+
+    .redirect-logo img {
+      width: 72px;
+      height: 72px;
+      border-radius: 18px;
+      box-shadow: 0 0 0 1px var(--border), 0 8px 24px rgba(0,0,0,0.4), 0 2px 8px rgba(37,99,235,0.2);
+    }
+
+    .redirect-header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .redirect-header h1 {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 8px;
+    }
+
+    .redirect-header p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .status-indicator {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 28px;
+      padding: 12px 16px;
+      background: rgba(37,99,235,0.08);
+      border: 1px solid rgba(37,99,235,0.2);
+      border-radius: var(--radius-sm);
+      transition: all var(--transition);
+    }
+
+    .status-indicator.success {
+      background: rgba(34,197,94,0.08);
+      border-color: rgba(34,197,94,0.2);
+    }
+
+    .status-indicator.warning {
+      background: rgba(245,158,11,0.08);
+      border-color: rgba(245,158,11,0.2);
+    }
+
+    .dot-loader { display: flex; gap: 4px; align-items: center; flex-shrink: 0; }
+    .dot-loader span {
+      width: 5px; height: 5px;
+      background: var(--brand);
+      border-radius: 50%;
+      animation: dot-bounce 1.2s ease-in-out infinite;
+    }
+    .dot-loader span:nth-child(2) { animation-delay: 0.2s; }
+    .dot-loader span:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes dot-bounce {
+      0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+      30% { transform: translateY(-5px); opacity: 1; }
+    }
+
+    .status-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: none;
+    }
+
+    .status-indicator.success .status-dot { display: block; background: var(--success); box-shadow: 0 0 6px var(--success); }
+    .status-indicator.warning .status-dot { display: block; background: var(--warning); box-shadow: 0 0 6px var(--warning); }
+    .status-indicator.success .dot-loader,
+    .status-indicator.warning .dot-loader { display: none; }
+
+    .status-text {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      transition: color var(--transition);
+    }
+
+    .status-indicator.success .status-text { color: var(--success); }
+    .status-indicator.warning .status-text { color: var(--warning); }
+
+    .redirect-btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .redirect-btn-group .btn {
+      width: 100%;
+      padding: 14px 20px;
+      font-size: 15px;
+    }
+
+    .redirect-divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 4px 0;
+    }
+
+    .redirect-divider::before, .redirect-divider::after {
+      content: ''; flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .redirect-divider span {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+  </style>
 </head>
-
-<body class="font-sans bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 min-h-screen overflow-x-hidden text-slate-800">
-
-<!-- =========================================================
-     NAVBAR
-========================================================= -->
-<nav class="fixed top-0 inset-x-0 z-50 bg-white/70 backdrop-blur-md border-b border-blue-100">
-  <div class="max-w-5xl mx-auto px-5 py-3 flex items-center justify-between">
-    <div class="flex items-center gap-2.5">
-      <img src="/logo-single.png" alt="Aplikite" class="w-8 h-8 object-contain">
-      <span class="text-lg font-bold text-slate-800">Aplikite</span>
-    </div>
-    <a href="https://play.google.com/store/apps/details?id=com.aplikite.app"
-       class="inline-flex items-center gap-1.5 bg-emerald-500 hover:bg-emerald-600 active:scale-95
-              text-white text-sm font-semibold px-4 py-2 rounded-full transition-all duration-150 no-underline">
-      <i data-lucide="download" class="w-4 h-4"></i> Download
-    </a>
-  </div>
-</nav>
-
-<!-- =========================================================
-     HERO
-========================================================= -->
-<section class="relative z-10 pt-28 pb-20 px-5 text-center">
-  <div class="max-w-2xl mx-auto">
-
-    <div class="inline-flex items-center gap-2 bg-indigo-50 border border-indigo-100 text-indigo-600
-                text-xs font-semibold px-4 py-1.5 rounded-full mb-6">
-      <span class="w-1.5 h-1.5 rounded-full bg-indigo-500 inline-block"></span>
-      Platform Aplikasi Android #1
-    </div>
-
-    <img src="/logo-single.png" alt="Aplikite" class="w-20 mx-auto mb-5 floating">
-
-    <h1 class="text-5xl sm:text-6xl lg:text-7xl font-black leading-tight tracking-tight">
-      <span class="bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">
-        Temukan Aplikasi
-      </span><br>
-      Terbaik di Sini
-    </h1>
-
-    <p class="mt-5 text-lg sm:text-xl text-slate-500 leading-relaxed max-w-lg mx-auto">
-      Platform terpercaya untuk menemukan, mengunduh, dan menikmati
-      aplikasi terbaik untuk perangkat Android Anda.
-    </p>
-
-    <!-- Redirect status card -->
-    <div class="mt-10 bg-white/80 backdrop-blur-sm border border-blue-100 rounded-3xl px-6 py-5
-                shadow-sm flex items-center gap-4 text-left max-w-md mx-auto">
-      <div class="loader shrink-0 w-11 h-11 rounded-full border-4 border-indigo-100 border-t-indigo-500"></div>
-      <div>
-        <p class="font-bold text-slate-800">Membuka Aplikite&hellip;</p>
-        <p class="text-sm text-slate-400 mt-0.5">
-          Jika tidak terbuka otomatis, gunakan tombol di bawah.
-        </p>
-      </div>
-    </div>
-
-    <!-- CTA buttons -->
-    <div class="mt-5 flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-      <a id="openAppBtn"
-         class="flex-1 flex items-center justify-center gap-2 rounded-2xl px-6 py-4
-                bg-gradient-to-br from-indigo-500 to-purple-500
-                text-white font-bold text-lg
-                shadow-lg shadow-indigo-200
-                hover:brightness-110 active:scale-[0.97] transition-all duration-150 no-underline">
-        <i data-lucide="external-link" class="w-5 h-5"></i>&nbsp;Buka di Aplikite
-      </a>
-      <a href="https://play.google.com/store/apps/details?id=com.aplikite.app"
-         class="flex-1 flex items-center justify-center gap-2 rounded-2xl px-6 py-4
-                bg-emerald-500 text-white font-bold text-lg
-                shadow-lg shadow-emerald-100
-                hover:brightness-110 active:scale-[0.97] transition-all duration-150 no-underline">
-        <i data-lucide="play-circle" class="w-5 h-5"></i>&nbsp;Google Play
-      </a>
-    </div>
-
-  </div>
-</section>
-
-<!-- =========================================================
-     FEATURES
-========================================================= -->
-<section class="relative z-10 py-20 px-5">
-  <div class="max-w-5xl mx-auto">
-
-    <div class="text-center mb-12">
-      <span class="text-indigo-500 font-semibold text-sm uppercase tracking-widest">Kenapa Aplikite?</span>
-      <h2 class="mt-2 text-3xl sm:text-4xl font-extrabold text-slate-800">Semua yang Anda Butuhkan</h2>
-      <p class="mt-3 text-slate-500 max-w-md mx-auto">Kami hadir untuk membuat pengalaman menemukan aplikasi menjadi lebih mudah dan menyenangkan.</p>
-    </div>
-
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-
-      <div class="bg-white/80 backdrop-blur-sm border border-blue-50 rounded-3xl p-6 shadow-sm
-                  hover:shadow-md hover:-translate-y-1 transition-all duration-200">
-        <div class="w-12 h-12 bg-indigo-50 rounded-2xl flex items-center justify-center mb-4"><i data-lucide="search" class="w-6 h-6 text-indigo-500"></i></div>
-        <h3 class="font-bold text-slate-800 mb-1.5">Temukan Aplikasi</h3>
-        <p class="text-sm text-slate-500 leading-relaxed">Ribuan aplikasi tersedia, dari produktivitas hingga hiburan.</p>
-      </div>
-
-      <div class="bg-white/80 backdrop-blur-sm border border-yellow-50 rounded-3xl p-6 shadow-sm
-                  hover:shadow-md hover:-translate-y-1 transition-all duration-200">
-        <div class="w-12 h-12 bg-yellow-50 rounded-2xl flex items-center justify-center mb-4"><i data-lucide="star" class="w-6 h-6 text-yellow-500"></i></div>
-        <h3 class="font-bold text-slate-800 mb-1.5">Rating Terpercaya</h3>
-        <p class="text-sm text-slate-500 leading-relaxed">Ulasan dan rating nyata dari jutaan pengguna aktif.</p>
-      </div>
-
-      <div class="bg-white/80 backdrop-blur-sm border border-emerald-50 rounded-3xl p-6 shadow-sm
-                  hover:shadow-md hover:-translate-y-1 transition-all duration-200">
-        <div class="w-12 h-12 bg-emerald-50 rounded-2xl flex items-center justify-center mb-4"><i data-lucide="shield-check" class="w-6 h-6 text-emerald-500"></i></div>
-        <h3 class="font-bold text-slate-800 mb-1.5">Aman &amp; Terverifikasi</h3>
-        <p class="text-sm text-slate-500 leading-relaxed">Setiap aplikasi diverifikasi keamanannya sebelum tayang.</p>
-      </div>
-
-      <div class="bg-white/80 backdrop-blur-sm border border-purple-50 rounded-3xl p-6 shadow-sm
-                  hover:shadow-md hover:-translate-y-1 transition-all duration-200">
-        <div class="w-12 h-12 bg-purple-50 rounded-2xl flex items-center justify-center mb-4"><i data-lucide="zap" class="w-6 h-6 text-purple-500"></i></div>
-        <h3 class="font-bold text-slate-800 mb-1.5">Update Terbaru</h3>
-        <p class="text-sm text-slate-500 leading-relaxed">Selalu dapatkan versi terbaru aplikasi favorit Anda.</p>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- =========================================================
-     APP PREVIEW
-========================================================= -->
-<section class="relative z-10 py-20 px-5 text-center">
-  <div class="max-w-4xl mx-auto">
-
-    <span class="text-purple-500 font-semibold text-sm uppercase tracking-widest">Preview</span>
-    <h2 class="mt-2 text-3xl sm:text-4xl font-extrabold text-slate-800">Tampilan Aplikite</h2>
-    <p class="mt-3 text-slate-500 max-w-sm mx-auto">Antarmuka yang bersih, intuitif, dan mudah digunakan.</p>
-
-    <div class="mt-12 relative flex items-center justify-center gap-6">
-
-      <!-- Left stat badge -->
-      <div class="hidden sm:flex flex-col items-center bg-white/80 backdrop-blur-sm border border-blue-100
-                  rounded-2xl px-5 py-4 shadow-sm self-start mt-16">
-        <span class="text-2xl font-black text-indigo-600">10K+</span>
-        <span class="text-xs text-slate-500 mt-0.5">Aplikasi</span>
-      </div>
-
-      <!-- Phone mockup -->
-      <div class="relative w-52 h-[420px] bg-gradient-to-b from-indigo-100 to-purple-100
-                  rounded-[3rem] border-4 border-white shadow-2xl shadow-indigo-200/50 overflow-hidden floating">
-        <!-- Status bar -->
-        <div class="flex justify-between items-center px-5 pt-3 pb-1">
-          <span class="text-[10px] font-semibold text-slate-500">9:41</span>
-          <div class="w-16 h-4 bg-white/60 rounded-full"></div>
-          <span class="text-[10px] font-semibold text-slate-500">&#128267;</span>
-        </div>
-        <!-- Search bar -->
-        <div class="mx-4 mt-2 bg-white/70 rounded-2xl px-3 py-2 flex items-center gap-2">
-          <span class="text-xs">&#128269;</span>
-          <span class="text-[10px] text-slate-400">Cari aplikasi...</span>
-        </div>
-        <!-- App grid -->
-        <div class="grid grid-cols-3 gap-3 px-4 mt-4">
-          <div class="bg-white/70 rounded-2xl p-2 flex flex-col items-center gap-1">
-            <span class="text-xl">&#127926;</span>
-            <span class="text-[8px] text-slate-500">Musik</span>
-          </div>
-          <div class="bg-white/70 rounded-2xl p-2 flex flex-col items-center gap-1">
-            <span class="text-xl">&#127757;</span>
-            <span class="text-[8px] text-slate-500">Maps</span>
-          </div>
-          <div class="bg-white/70 rounded-2xl p-2 flex flex-col items-center gap-1">
-            <span class="text-xl">&#128248;</span>
-            <span class="text-[8px] text-slate-500">Kamera</span>
-          </div>
-          <div class="bg-white/70 rounded-2xl p-2 flex flex-col items-center gap-1">
-            <span class="text-xl">&#127918;</span>
-            <span class="text-[8px] text-slate-500">Game</span>
-          </div>
-          <div class="bg-indigo-400/80 rounded-2xl p-2 flex flex-col items-center gap-1">
-            <span class="text-xl">&#128640;</span>
-            <span class="text-[8px] text-white">Aplikite</span>
-          </div>
-          <div class="bg-white/70 rounded-2xl p-2 flex flex-col items-center gap-1">
-            <span class="text-xl">&#128218;</span>
-            <span class="text-[8px] text-slate-500">Buku</span>
-          </div>
-        </div>
-        <!-- Featured card -->
-        <div class="mx-4 mt-4 bg-gradient-to-r from-indigo-400 to-purple-400 rounded-2xl px-3 py-2.5">
-          <p class="text-[9px] text-white/80 font-medium">UNGGULAN HARI INI</p>
-          <p class="text-[11px] text-white font-bold mt-0.5">Aplikasi Produktivitas #1</p>
-          <p class="text-[8px] text-white/70 mt-0.5">&#11088; 4.9 &bull; 2M unduhan</p>
-        </div>
-      </div>
-
-      <!-- Right stat badge -->
-      <div class="hidden sm:flex flex-col items-center bg-white/80 backdrop-blur-sm border border-purple-100
-                  rounded-2xl px-5 py-4 shadow-sm self-end mb-16">
-        <span class="text-2xl font-black text-purple-600">4.9&#11088;</span>
-        <span class="text-xs text-slate-500 mt-0.5">Rating</span>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- =========================================================
-     CTA BAND
-========================================================= -->
-<section class="relative z-10 px-5 pb-16">
-  <div class="max-w-3xl mx-auto bg-gradient-to-br from-indigo-500 to-purple-600
-              rounded-3xl py-14 px-8 text-center shadow-2xl shadow-indigo-200">
-    <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Mulai Gunakan Aplikite Sekarang</h2>
-    <p class="mt-3 text-indigo-100 text-lg">Gratis, aman, dan selalu diperbarui.</p>
-    <a href="https://play.google.com/store/apps/details?id=com.aplikite.app"
-       class="mt-8 inline-flex items-center gap-2 bg-white text-indigo-600 font-bold text-lg
-              px-8 py-4 rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-0.5
-              active:scale-95 transition-all duration-150 no-underline">
-      <i data-lucide="play-circle" class="w-5 h-5"></i>&nbsp;Download di Google Play
-    </a>
-  </div>
-</section>
-
-<!-- =========================================================
-     FOOTER
-========================================================= -->
-<footer class="relative z-10 border-t border-blue-100 py-8 text-center">
-  <p class="text-sm text-slate-400">&copy; 2025 Aplikite. All rights reserved.</p>
-</footer>
+<body>
+<div id="app"></div>
 
 <script>
-  const segments = location.pathname.split('/');
-  const appId = segments[2];
+(function () {
 
-  const deepLink = `aplikite://app/${appId}`;
+  // ─── Router ───────────────────────────────────────────────
+  function route() {
+    var path = location.pathname;
+    var app  = document.getElementById('app');
 
-  document.getElementById('openAppBtn').href = deepLink;
+    if (path.startsWith('/app/')) {
+      renderRedirect(app, path.split('/')[2]);
+    } else if (path === '/download') {
+      renderWithChrome(app, renderDownload);
+    } else if (path === '/specs') {
+      renderWithChrome(app, renderSpecs);
+    } else {
+      renderWithChrome(app, renderLanding);
+    }
+  }
 
-  setTimeout(() => {
-    location.href = deepLink;
-  }, 1000);
+  // Wraps a page with nav + footer
+  function renderWithChrome(container, renderPage) {
+    container.innerHTML = '';
+    container.appendChild(buildNav());
+    var main = document.createElement('main');
+    main.style.paddingTop = 'var(--nav-height)';
+    renderPage(main);
+    container.appendChild(main);
+    container.appendChild(buildFooter());
+    highlightNav();
+  }
 
-  lucide.createIcons();
+  // ─── Nav ──────────────────────────────────────────────────
+  function buildNav() {
+    var nav = document.createElement('nav');
+    nav.className = 'nav';
+    var inner = document.createElement('div');
+    inner.className = 'nav-inner';
+
+    var logo = document.createElement('a');
+    logo.href = '/';
+    logo.className = 'nav-logo';
+    logo.onclick = function(e) { window.navigate(e, '/'); };
+    logo.innerHTML = '<img src="/logo-single.png" alt="Aplikite">Aplikite';
+
+    var navLinks = document.createElement('div');
+    navLinks.className = 'nav-links';
+    [['/', 'Beranda'], ['/download', 'Download'], ['/specs', 'Spesifikasi']].forEach(function(item) {
+      var a = document.createElement('a');
+      a.href = item[0];
+      a.dataset.path = item[0];
+      a.textContent = item[1];
+      a.onclick = function(e) { window.navigate(e, item[0]); };
+      navLinks.appendChild(a);
+    });
+
+    var navCta = document.createElement('div');
+    navCta.className = 'nav-cta';
+    var ctaBtn = document.createElement('a');
+    ctaBtn.href = '/download';
+    ctaBtn.className = 'btn btn-primary';
+    ctaBtn.textContent = 'Download APK';
+    ctaBtn.onclick = function(e) { window.navigate(e, '/download'); };
+    navCta.appendChild(ctaBtn);
+
+    inner.appendChild(logo);
+    inner.appendChild(navLinks);
+    inner.appendChild(navCta);
+    nav.appendChild(inner);
+    return nav;
+  }
+
+  function highlightNav() {
+    var path = location.pathname;
+    var links = document.querySelectorAll('.nav-links a');
+    links.forEach(function(a) {
+      a.classList.toggle('active', a.dataset.path === path);
+    });
+  }
+
+  // ─── Footer ───────────────────────────────────────────────
+  function buildFooter() {
+    var footer = document.createElement('footer');
+    footer.className = 'footer';
+    footer.innerHTML = [
+      '<div class="footer-inner">',
+        '<a href="/" class="footer-logo" onclick="navigate(event, \'/\')">',
+          '<img src="/logo-single.png" alt="Aplikite">',
+          'Aplikite',
+        '</a>',
+        '<div class="footer-links">',
+          '<a href="/" onclick="navigate(event, \'/\')">Beranda</a>',
+          '<a href="/download" onclick="navigate(event, \'/download\')">Download</a>',
+          '<a href="/specs" onclick="navigate(event, \'/specs\')">Spesifikasi</a>',
+        '</div>',
+        '<p class="footer-copy">&copy; 2025 Aplikite. All rights reserved.</p>',
+      '</div>'
+    ].join('');
+    return footer;
+  }
+
+  // ─── Client-side navigation ───────────────────────────────
+  window.navigate = function(e, path) {
+    e.preventDefault();
+    history.pushState(null, '', path);
+    route();
+    window.scrollTo(0, 0);
+  };
+
+  window.addEventListener('popstate', route);
+
+  // ─── Page stubs (filled in next phases) ───────────────────
+  function renderLanding(el) {
+    el.innerHTML = [
+      '<section class="hero fade-up">',
+        '<div class="hero-badge">',
+          '<span class="hero-badge-dot"></span>',
+          'Tersedia untuk Android',
+        '</div>',
+        '<h1>Satu Aplikasi untuk<br><span class="gradient-text">Semua Kebutuhanmu</span></h1>',
+        '<p class="hero-sub">Aplikite hadir sebagai solusi lengkap yang ringan, cepat, dan mudah digunakan. Dirancang khusus untuk pengguna Indonesia.</p>',
+        '<div class="hero-actions">',
+          '<a href="/download" class="btn btn-primary btn-lg" onclick="navigate(event,\'/download\')">',
+            '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>',
+            'Download Sekarang',
+          '</a>',
+          '<a href="/specs" class="btn btn-secondary btn-lg" onclick="navigate(event,\'/specs\')">',
+            'Lihat Spesifikasi',
+          '</a>',
+        '</div>',
+        '<p class="hero-note">Gratis &bull; Tanpa iklan &bull; APK langsung, tanpa Play Store</p>',
+      '</section>',
+
+      '<section class="section">',
+        '<div class="section-header">',
+          '<p class="section-label">Fitur</p>',
+          '<h2 class="section-title">Kenapa Pilih Aplikite?</h2>',
+          '<p class="section-desc">Dibangun dengan fokus pada performa dan kemudahan, Aplikite memberikan pengalaman terbaik di perangkatmu.</p>',
+        '</div>',
+        '<div class="features-grid">',
+          '<div class="feature-card">',
+            '<div class="feature-icon">&#9889;</div>',
+            '<h3>Ringan &amp; Cepat</h3>',
+            '<p>Ukuran APK yang kecil dengan performa tinggi. Tidak membebani baterai dan memori perangkat.</p>',
+          '</div>',
+          '<div class="feature-card">',
+            '<div class="feature-icon">&#128274;</div>',
+            '<h3>Aman &amp; Privat</h3>',
+            '<p>Data kamu tetap di perangkatmu. Tidak ada tracking, tidak ada iklan, tidak ada penjualan data.</p>',
+          '</div>',
+          '<div class="feature-card">',
+            '<div class="feature-icon">&#127760;</div>',
+            '<h3>Offline First</h3>',
+            '<p>Sebagian besar fitur berjalan tanpa koneksi internet. Tetap produktif kapanpun dan di manapun.</p>',
+          '</div>',
+          '<div class="feature-card">',
+            '<div class="feature-icon">&#128260;</div>',
+            '<h3>Update Mandiri</h3>',
+            '<p>Update tersedia langsung dari halaman download kami. Kontrol penuh ada di tanganmu.</p>',
+          '</div>',
+        '</div>',
+      '</section>',
+
+      '<div class="cta-banner fade-up">',
+        '<div class="cta-banner-text">',
+          '<h2>Siap Mencoba Aplikite?</h2>',
+          '<p>Download APK terbaru dan mulai gunakan sekarang juga.</p>',
+          '<span class="version-chip">v1.0.0 &mdash; Terbaru</span>',
+        '</div>',
+        '<a href="/download" class="btn btn-primary btn-lg" onclick="navigate(event,\'/download\')">',
+          'Download APK &rarr;',
+        '</a>',
+      '</div>',
+    ].join('');
+  }
+
+  function renderDownload(el) {
+    var versions = [
+      {
+        v: 'v1.0.2', date: '15 Jun 2025', size: '18.4 MB', isLatest: true,
+        changes: [
+          'Perbaikan bug crash saat membuka notifikasi',
+          'Peningkatan performa loading awal',
+          'Tampilan lebih responsif di layar kecil',
+          'Perbaikan minor pada animasi transisi',
+        ],
+        url: 'https://github.com/aplikite/app/releases/download/v1.0.2/aplikite-v1.0.2.apk'
+      },
+      {
+        v: 'v1.0.1', date: '1 Jun 2025', size: '18.1 MB', isLatest: false,
+        changes: [
+          'Menambahkan dark mode otomatis',
+          'Perbaikan login saat koneksi lambat',
+        ],
+        url: 'https://github.com/aplikite/app/releases/download/v1.0.1/aplikite-v1.0.1.apk'
+      },
+      {
+        v: 'v1.0.0', date: '20 Mei 2025', size: '17.8 MB', isLatest: false,
+        changes: ['Rilis perdana Aplikite'],
+        url: 'https://github.com/aplikite/app/releases/download/v1.0.0/aplikite-v1.0.0.apk'
+      },
+    ];
+
+    var latest = versions[0];
+
+    var historyRows = versions.map(function(v) {
+      return [
+        '<tr>',
+          '<td>', v.v, v.isLatest ? '<span class="tag-new">Terbaru</span>' : '', '</td>',
+          '<td>', v.date, '</td>',
+          '<td>', v.changes[0], v.changes.length > 1 ? ' <span style="color:var(--text-muted)">+' + (v.changes.length - 1) + ' lainnya</span>' : '', '</td>',
+          '<td>', v.size, '</td>',
+          '<td><a class="dl-link" href="', v.url, '" download>&#8595; APK</a></td>',
+        '</tr>'
+      ].join('');
+    }).join('');
+
+    el.innerHTML = [
+      '<div class="page-hero fade-up">',
+        '<h1>Download Aplikite</h1>',
+        '<p>Unduh APK langsung ke perangkatmu. Tidak perlu Play Store &mdash; install manual hanya butuh beberapa detik.</p>',
+      '</div>',
+
+      '<div class="latest-release fade-up">',
+        '<div class="release-card-latest">',
+          '<div class="release-top">',
+            '<div>',
+              '<div class="release-version">',
+                latest.v,
+                '<span class="badge-latest">Terbaru</span>',
+              '</div>',
+              '<p class="release-meta">Dirilis ', latest.date, ' &bull; ', latest.size, '</p>',
+            '</div>',
+          '</div>',
+          '<div class="release-changelog">',
+            '<h4>Yang Baru</h4>',
+            '<ul class="changelog-list">',
+              latest.changes.map(function(c) { return '<li>' + c + '</li>'; }).join(''),
+            '</ul>',
+          '</div>',
+          '<div class="release-actions">',
+            '<a href="', latest.url, '" class="btn btn-primary btn-lg" download>',
+              '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>',
+              'Download ', latest.v,
+            '</a>',
+            '<a href="/specs" class="btn btn-secondary" onclick="navigate(event,\'/specs\')">Cek Spesifikasi</a>',
+          '</div>',
+        '</div>',
+      '</div>',
+
+      '<div class="version-history fade-up">',
+        '<h2>Riwayat Versi</h2>',
+        '<table class="history-table">',
+          '<thead><tr>',
+            '<th>Versi</th>',
+            '<th>Tanggal</th>',
+            '<th>Perubahan</th>',
+            '<th>Ukuran</th>',
+            '<th>Download</th>',
+          '</tr></thead>',
+          '<tbody>', historyRows, '</tbody>',
+        '</table>',
+      '</div>',
+    ].join('');
+  }
+
+  function renderSpecs(el) {
+    el.innerHTML = [
+      '<div class="page-hero fade-up">',
+        '<h1>Spesifikasi Perangkat</h1>',
+        '<p>Pastikan perangkatmu memenuhi kebutuhan minimum sebelum menginstall Aplikite.</p>',
+      '</div>',
+
+      '<div class="specs-grid fade-up">',
+        '<div class="spec-card">',
+          '<div class="spec-card-header">',
+            '<span class="spec-card-icon">&#128313;</span>',
+            '<div><h3>Minimum</h3><p>Dapat berjalan, performa dasar</p></div>',
+          '</div>',
+          '<div class="spec-rows">',
+            '<div class="spec-row"><span class="spec-label">Android</span><span class="spec-value">8.0 Oreo (API 26)</span></div>',
+            '<div class="spec-row"><span class="spec-label">RAM</span><span class="spec-value">2 GB</span></div>',
+            '<div class="spec-row"><span class="spec-label">Penyimpanan</span><span class="spec-value">100 MB</span></div>',
+            '<div class="spec-row"><span class="spec-label">CPU</span><span class="spec-value">Quad-core 1.4 GHz</span></div>',
+            '<div class="spec-row"><span class="spec-label">Layar</span><span class="spec-value">720 &times; 1280 px</span></div>',
+            '<div class="spec-row"><span class="spec-label">Koneksi</span><span class="spec-value">Tidak wajib</span></div>',
+          '</div>',
+        '</div>',
+
+        '<div class="spec-card recommended">',
+          '<div class="spec-card-header">',
+            '<span class="spec-card-icon">&#11088;</span>',
+            '<div><h3>Rekomendasi</h3><p>Performa optimal &amp; pengalaman terbaik</p></div>',
+          '</div>',
+          '<div class="spec-rows">',
+            '<div class="spec-row"><span class="spec-label">Android</span><span class="spec-value">11.0 (API 30+)</span></div>',
+            '<div class="spec-row"><span class="spec-label">RAM</span><span class="spec-value">4 GB atau lebih</span></div>',
+            '<div class="spec-row"><span class="spec-label">Penyimpanan</span><span class="spec-value">200 MB</span></div>',
+            '<div class="spec-row"><span class="spec-label">CPU</span><span class="spec-value">Octa-core 2.0 GHz+</span></div>',
+            '<div class="spec-row"><span class="spec-label">Layar</span><span class="spec-value">1080 &times; 1920 px</span></div>',
+            '<div class="spec-row"><span class="spec-label">Koneksi</span><span class="spec-value">Wi-Fi / 4G LTE</span></div>',
+          '</div>',
+        '</div>',
+      '</div>',
+
+      '<div class="specs-extra fade-up">',
+        '<div class="extra-card">',
+          '<h4>Arsitektur yang Didukung</h4>',
+          '<div class="extra-tags">',
+            '<span class="extra-tag">arm64-v8a</span>',
+            '<span class="extra-tag">armeabi-v7a</span>',
+            '<span class="extra-tag">x86_64</span>',
+          '</div>',
+        '</div>',
+        '<div class="extra-card">',
+          '<h4>Izin Aplikasi</h4>',
+          '<div class="extra-tags">',
+            '<span class="extra-tag">INTERNET</span>',
+            '<span class="extra-tag">READ_EXTERNAL_STORAGE</span>',
+            '<span class="extra-tag">WRITE_EXTERNAL_STORAGE</span>',
+            '<span class="extra-tag">RECEIVE_BOOT_COMPLETED</span>',
+          '</div>',
+        '</div>',
+        '<div class="extra-card">',
+          '<h4>Cara Install APK</h4>',
+          '<div class="extra-tags">',
+            '<span class="extra-tag">Aktifkan &ldquo;Sumber Tidak Dikenal&rdquo;</span>',
+            '<span class="extra-tag">Buka file .apk</span>',
+            '<span class="extra-tag">Tap Install</span>',
+          '</div>',
+        '</div>',
+      '</div>',
+    ].join('');
+  }
+
+  function renderRedirect(container, appId) {
+    var deepLink = appId ? 'aplikite://app/' + appId : null;
+
+    container.innerHTML = [
+      '<div class="redirect-wrap">',
+        '<div class="redirect-card">',
+          '<div class="redirect-logo">',
+            '<img src="/logo-single.png" alt="Aplikite">',
+          '</div>',
+          '<div class="redirect-header">',
+            '<h1>Aplikite</h1>',
+            '<p>Membuka aplikasi di perangkat kamu...</p>',
+          '</div>',
+          '<div class="status-indicator" id="statusIndicator" role="status" aria-live="polite">',
+            '<div class="dot-loader" aria-hidden="true"><span></span><span></span><span></span></div>',
+            '<div class="status-dot" aria-hidden="true"></div>',
+            '<p class="status-text" id="statusText">Mengarahkan ke aplikasi...</p>',
+          '</div>',
+          '<div class="redirect-btn-group">',
+            deepLink
+              ? '<a href="' + deepLink + '" class="btn btn-primary" id="openAppBtn" aria-label="Buka aplikasi Aplikite"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8l6 4-6 4z"/></svg> Buka Aplikasi</a>'
+              : '',
+            '<div class="redirect-divider"><span>atau</span></div>',
+            '<a href="/download" class="btn btn-secondary" onclick="navigate(event,\'/download\')">Download Aplikite</a>',
+          '</div>',
+        '</div>',
+      '</div>',
+    ].join('');
+
+    if (!deepLink) {
+      var ind = document.getElementById('statusIndicator');
+      var txt = document.getElementById('statusText');
+      if (ind) ind.className = 'status-indicator warning';
+      if (txt) txt.textContent = 'ID aplikasi tidak ditemukan.';
+      return;
+    }
+
+    setTimeout(function() {
+      location.href = deepLink;
+    }, 1000);
+
+    setTimeout(function() {
+      if (!document.hidden) {
+        var ind = document.getElementById('statusIndicator');
+        var txt = document.getElementById('statusText');
+        if (ind) ind.className = 'status-indicator warning';
+        if (txt) txt.textContent = 'Aplikasi tidak terinstall? Coba download dulu.';
+      }
+    }, 2500);
+
+    document.addEventListener('visibilitychange', function onVis() {
+      if (document.hidden) {
+        var ind = document.getElementById('statusIndicator');
+        var txt = document.getElementById('statusText');
+        if (ind) ind.className = 'status-indicator success';
+        if (txt) txt.textContent = 'Aplikasi berhasil dibuka!';
+        document.removeEventListener('visibilitychange', onVis);
+      }
+    });
+  }
+
+  // ─── Boot ─────────────────────────────────────────────────
+  route();
+
+})();
 </script>
-
 </body>
 </html>

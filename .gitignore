@@ -1,0 +1,14 @@
+# Dependencies
+node_modules/
+
+# IDE
+.idea/
+
+# Testing artifacts
+screenshots/
+check.js
+verify.js
+
+# Duplicate/backup files
+favicon_2.ico
+logo-single_2.png

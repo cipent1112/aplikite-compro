@@ -1,0 +1,24 @@
+{
+  "name": "aplikite",
+  "version": "1.0.0",
+  "description": "",
+  "main": "verify.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cipent1112/aplikite-compro.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/cipent1112/aplikite-compro/issues"
+  },
+  "homepage": "https://github.com/cipent1112/aplikite-compro#readme",
+  "devDependencies": {
+    "playwright": "^1.61.0"
+  }
+}
