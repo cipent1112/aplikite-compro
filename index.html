@@ -555,16 +555,77 @@
     }
 
     .feature-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
-      background: var(--brand-subtle);
-      border: 1px solid rgba(37,99,235,0.2);
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
       display: flex;
       align-items: center;
       justify-content: center;
       margin-bottom: 20px;
-      font-size: 20px;
+      position: relative;
+      transform: perspective(200px) rotateX(15deg) rotateY(-15deg);
+      transform-style: preserve-3d;
+      transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    .feature-card:hover .feature-icon {
+      transform: perspective(200px) rotateX(10deg) rotateY(-10deg) translateY(-4px) scale(1.05);
+    }
+
+    .feature-icon::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 20px;
+      background: inherit;
+      transform: translateZ(-12px);
+      opacity: 0.6;
+    }
+
+    .feature-icon::after {
+      content: '';
+      position: absolute;
+      inset: 4px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.3) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .feature-icon svg {
+      width: 40px;
+      height: 40px;
+      position: relative;
+      z-index: 2;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+    }
+
+    .feature-icon.icon-speed {
+      background: linear-gradient(135deg, #f97316 0%, #f59e0b 100%);
+      box-shadow:
+        0 8px 0 #c2410c,
+        0 12px 20px rgba(194,65,12,0.4),
+        inset 0 -3px 6px rgba(194,65,12,0.3);
+    }
+    .feature-icon.icon-lock {
+      background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+      box-shadow:
+        0 8px 0 #15803d,
+        0 12px 20px rgba(21,128,61,0.4),
+        inset 0 -3px 6px rgba(21,128,61,0.3);
+    }
+    .feature-icon.icon-globe {
+      background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+      box-shadow:
+        0 8px 0 #1e40af,
+        0 12px 20px rgba(30,64,175,0.4),
+        inset 0 -3px 6px rgba(30,64,175,0.3);
+    }
+    .feature-icon.icon-sync {
+      background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
+      box-shadow:
+        0 8px 0 #7e22ce,
+        0 12px 20px rgba(126,34,206,0.4),
+        inset 0 -3px 6px rgba(126,34,206,0.3);
     }
 
     .feature-card h3 {
@@ -1266,6 +1327,78 @@
       flex-shrink: 0;
     }
 
+    .dev-cta-illustration {
+      position: absolute;
+      top: 50%;
+      right: 40%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      opacity: 0.15;
+    }
+
+    .dev-3d-scene {
+      width: 200px;
+      height: 200px;
+      position: relative;
+      perspective: 800px;
+    }
+
+    .dev-3d-cube {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, #f97316 0%, #f59e0b 100%);
+      border-radius: 12px;
+      transform: rotateX(20deg) rotateY(30deg);
+      box-shadow:
+        0 10px 0 rgba(0,0,0,0.2),
+        0 15px 30px rgba(0,0,0,0.3);
+      animation: float-cube 4s ease-in-out infinite;
+    }
+
+    .dev-3d-cube.cube-2 {
+      width: 45px;
+      height: 45px;
+      top: 60px;
+      left: 80px;
+      background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+      animation-delay: 0.5s;
+    }
+
+    .dev-3d-cube.cube-3 {
+      width: 35px;
+      height: 35px;
+      top: 120px;
+      left: 30px;
+      background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+      animation-delay: 1s;
+    }
+
+    .dev-3d-code {
+      position: absolute;
+      top: 80px;
+      left: 140px;
+      font-size: 48px;
+      font-weight: 800;
+      color: rgba(249,115,22,0.3);
+      transform: rotateY(-15deg);
+      animation: float-code 3s ease-in-out infinite;
+    }
+
+    @keyframes float-cube {
+      0%, 100% { transform: rotateX(20deg) rotateY(30deg) translateY(0); }
+      50% { transform: rotateX(20deg) rotateY(30deg) translateY(-15px); }
+    }
+
+    @keyframes float-code {
+      0%, 100% { transform: rotateY(-15deg) translateY(0); }
+      50% { transform: rotateY(-15deg) translateY(-10px); }
+    }
+
+    @media (max-width: 900px) {
+      .dev-cta-illustration { display: none; }
+    }
+
     .btn-disabled {
       background: var(--surface) !important;
       color: var(--text-muted) !important;
@@ -1584,22 +1717,22 @@
         '</div>',
         '<div class="features-grid">',
           '<div class="feature-card">',
-            '<div class="feature-icon">&#9889;</div>',
+            '<div class="feature-icon icon-speed"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>',
             '<h3>Ringan &amp; Cepat</h3>',
             '<p>Ukuran APK yang kecil dengan performa tinggi. Tidak membebani baterai dan memori perangkat.</p>',
           '</div>',
           '<div class="feature-card">',
-            '<div class="feature-icon">&#128274;</div>',
+            '<div class="feature-icon icon-lock"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 17a2 2 0 100-4 2 2 0 000 4zm6-7V8a6 6 0 10-12 0v2a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2v-8a2 2 0 00-2-2zM8 8a4 4 0 118 0v2H8V8z"/></svg></div>',
             '<h3>Aman &amp; Privat</h3>',
             '<p>Data kamu tetap di perangkatmu. Tidak ada tracking, tidak ada iklan, tidak ada penjualan data.</p>',
           '</div>',
           '<div class="feature-card">',
-            '<div class="feature-icon">&#127760;</div>',
+            '<div class="feature-icon icon-globe"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg></div>',
             '<h3>Offline First</h3>',
             '<p>Sebagian besar fitur berjalan tanpa koneksi internet. Tetap produktif kapanpun dan di manapun.</p>',
           '</div>',
           '<div class="feature-card">',
-            '<div class="feature-icon">&#128260;</div>',
+            '<div class="feature-icon icon-sync"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg></div>',
             '<h3>Update Mandiri</h3>',
             '<p>Update tersedia langsung dari halaman download kami. Kontrol penuh ada di tanganmu.</p>',
           '</div>',
@@ -1666,16 +1799,6 @@
 
           '<div class="faq-item">',
             '<button class="faq-question">',
-              '<span>Bisakah digunakan tanpa internet?</span>',
-              '<svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>',
-            '</button>',
-            '<div class="faq-answer">',
-              '<div class="faq-answer-inner">Ya! Aplikite dirancang dengan pendekatan offline-first. Sebagian besar fitur utama dapat digunakan tanpa koneksi internet.</div>',
-            '</div>',
-          '</div>',
-
-          '<div class="faq-item">',
-            '<button class="faq-question">',
               '<span>Perangkat apa saja yang didukung?</span>',
               '<svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>',
             '</button>',
@@ -1697,6 +1820,14 @@
       '</section>',
 
       '<div class="dev-cta fade-up">',
+        '<div class="dev-cta-illustration">',
+          '<div class="dev-3d-scene">',
+            '<div class="dev-3d-cube"></div>',
+            '<div class="dev-3d-cube cube-2"></div>',
+            '<div class="dev-3d-cube cube-3"></div>',
+            '<div class="dev-3d-code">&lt;/&gt;</div>',
+          '</div>',
+        '</div>',
         '<div class="dev-cta-text">',
           '<h2>Developer? Bergabung Bersama Kami</h2>',
           '<p>Distribusikan aplikasimu ke jutaan pengguna Indonesia melalui platform Aplikite. Daftarkan aplikasimu dan raih lebih banyak pengguna.</p>',
