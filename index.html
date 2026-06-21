@@ -43,6 +43,29 @@
       --transition: 0.2s cubic-bezier(0.4,0,0.2,1);
     }
 
+    /* Light mode */
+    :root[data-theme="light"] {
+      --bg: #fafaf9;
+      --bg-2: #f5f5f4;
+      --surface: rgba(0,0,0,0.03);
+      --surface-hover: rgba(0,0,0,0.06);
+      --border: rgba(0,0,0,0.08);
+      --border-focus: rgba(249,115,22,0.3);
+      --text-primary: #1c1917;
+      --text-secondary: rgba(28,25,23,0.7);
+      --text-muted: rgba(28,25,23,0.45);
+    }
+
+    :root[data-theme="light"] body::before {
+      background-image:
+        radial-gradient(ellipse 80% 60% at 50% -10%, rgba(249,115,22,0.08) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 85% 90%, rgba(245,158,11,0.05) 0%, transparent 60%);
+    }
+
+    :root[data-theme="light"] .nav {
+      background: rgba(250,250,249,0.85);
+    }
+
     html, body { height: 100%; }
 
     body {
@@ -287,6 +310,134 @@
     @media (max-width: 768px) {
       .nav-links, .nav-cta { display: none; }
       .nav-hamburger { display: flex; }
+    }
+
+    /* Theme toggle */
+    .theme-toggle {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      cursor: pointer;
+      border-radius: 10px;
+      transition: all var(--transition);
+      flex-shrink: 0;
+      margin-right: 8px;
+    }
+    .theme-toggle:hover {
+      background: var(--surface-hover);
+      color: var(--text-primary);
+    }
+    .theme-toggle svg {
+      width: 20px;
+      height: 20px;
+    }
+    .theme-toggle .icon-sun { display: none; }
+    .theme-toggle .icon-moon { display: block; }
+    :root[data-theme="light"] .theme-toggle .icon-sun { display: block; }
+    :root[data-theme="light"] .theme-toggle .icon-moon { display: none; }
+
+    /* Desktop theme dropdown */
+    .theme-dropdown {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .theme-dropdown-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      height: 40px;
+      padding: 0 14px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text-secondary);
+      cursor: pointer;
+      border-radius: 10px;
+      transition: all var(--transition);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .theme-dropdown-btn:hover {
+      background: var(--surface-hover);
+      color: var(--text-primary);
+      border-color: var(--border-focus);
+    }
+    .theme-dropdown-btn svg {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+
+    .theme-dropdown-menu {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      width: 180px;
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 6px;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-4px);
+      transition: all 0.2s cubic-bezier(0.4,0,0.2,1);
+      z-index: 110;
+    }
+    .theme-dropdown.is-open .theme-dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .theme-dropdown-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      padding: 10px 12px;
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      cursor: pointer;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 500;
+      transition: all var(--transition);
+      text-align: left;
+    }
+    .theme-dropdown-item:hover {
+      background: var(--surface-hover);
+      color: var(--text-primary);
+    }
+    .theme-dropdown-item.is-active {
+      color: var(--brand);
+      background: var(--brand-subtle);
+    }
+    .theme-dropdown-item svg {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+    .theme-dropdown-item .check-icon {
+      margin-left: auto;
+      opacity: 0;
+    }
+    .theme-dropdown-item.is-active .check-icon {
+      opacity: 1;
+    }
+
+    @media (max-width: 768px) {
+      .theme-dropdown { display: none; }
     }
 
     .btn {
@@ -847,6 +998,64 @@
     }
 
     .history-table tr:last-child td { border-bottom: none; }
+
+    /* Mobile responsive history table */
+    @media (max-width: 768px) {
+      .history-table,
+      .history-table thead,
+      .history-table tbody,
+      .history-table th,
+      .history-table td,
+      .history-table tr {
+        display: block;
+      }
+
+      .history-table thead {
+        display: none;
+      }
+
+      .history-table tr {
+        margin-bottom: 16px;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        overflow: hidden;
+      }
+
+      .history-table tr:last-child td {
+        border-bottom: 1px solid var(--border);
+      }
+
+      .history-table td {
+        padding: 12px 16px;
+        border: none;
+        border-bottom: 1px solid var(--border);
+        text-align: left;
+        position: relative;
+        padding-left: 50%;
+      }
+
+      .history-table td:last-child {
+        border-bottom: none;
+      }
+
+      .history-table td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 16px;
+        top: 12px;
+        font-weight: 600;
+        font-size: 12px;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        letter-spacing: 0.5px;
+      }
+
+      .history-table td:first-child {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--text-primary);
+      }
+    }
 
     .history-table td:first-child {
       font-weight: 600;
@@ -1437,17 +1646,18 @@
     if (path.startsWith('/app/')) {
       renderRedirect(app, path.split('/')[2]);
     } else if (path === '/download') {
-      renderWithChrome(app, renderDownload);
+      renderWithChrome(app, renderDownload, 'download');
     } else if (path === '/specs') {
-      renderWithChrome(app, renderSpecs);
+      renderWithChrome(app, renderSpecs, 'specs');
     } else {
-      renderWithChrome(app, renderLanding);
+      renderWithChrome(app, renderLanding, 'landing');
     }
   }
 
   // Wraps a page with nav + footer
-  function renderWithChrome(container, renderPage) {
+  function renderWithChrome(container, renderPage, pageName) {
     container.innerHTML = '';
+    document.body.className = 'page-' + pageName;
     container.appendChild(buildNav());
     var main = document.createElement('main');
     main.style.paddingTop = 'var(--nav-height)';
@@ -1481,15 +1691,6 @@
       navLinks.appendChild(a);
     });
 
-    var navCta = document.createElement('div');
-    navCta.className = 'nav-cta';
-    var ctaBtn = document.createElement('a');
-    ctaBtn.href = '/download';
-    ctaBtn.className = 'btn btn-primary';
-    ctaBtn.textContent = 'Download APK';
-    ctaBtn.onclick = function(e) { window.navigate(e, '/download'); };
-    navCta.appendChild(ctaBtn);
-
     // Hamburger button for mobile
     var hamburger = document.createElement('button');
     hamburger.className = 'nav-hamburger';
@@ -1498,9 +1699,74 @@
     hamburger.innerHTML = '<svg class="icon-menu" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg><svg class="icon-close" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
     hamburger.onclick = function() { toggleDrawer(); };
 
+    // Desktop theme dropdown
+    var themeDropdown = document.createElement('div');
+    themeDropdown.className = 'theme-dropdown';
+    themeDropdown.innerHTML =
+      '<button class="theme-dropdown-btn" aria-label="Theme">' +
+        getThemeDropdownIconHTML() +
+        '<span>' + getThemeLabel() + '</span>' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><polyline points="6 9 12 15 18 9"></polyline></svg>' +
+      '</button>' +
+      '<div class="theme-dropdown-menu">' +
+        '<button class="theme-dropdown-item' + getActiveClass('system') + '" data-mode="system">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>' +
+          'Sistem' +
+          '<svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>' +
+        '</button>' +
+        '<button class="theme-dropdown-item' + getActiveClass('dark') + '" data-mode="dark">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>' +
+          'Gelap' +
+          '<svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>' +
+        '</button>' +
+        '<button class="theme-dropdown-item' + getActiveClass('light') + '" data-mode="light">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>' +
+          'Terang' +
+          '<svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>' +
+        '</button>' +
+      '</div>';
+
+    var dropdownBtn = themeDropdown.querySelector('.theme-dropdown-btn');
+    dropdownBtn.onclick = function(e) {
+      e.stopPropagation();
+      themeDropdown.classList.toggle('is-open');
+    };
+
+    var dropdownItems = themeDropdown.querySelectorAll('.theme-dropdown-item');
+    dropdownItems.forEach(function(item) {
+      item.onclick = function() {
+        var mode = this.getAttribute('data-mode');
+        applyThemeMode(mode);
+        dropdownItems.forEach(function(i) { i.classList.remove('is-active'); });
+        this.classList.add('is-active');
+        // Update both icon and label on the dropdown button
+        var btnIconSpan = dropdownBtn.querySelector('span');
+        // Replace the first SVG element with the correct icon for the new mode
+        var btnFirstSvg = dropdownBtn.querySelector('svg');
+        if (btnFirstSvg) {
+          var tempDiv = document.createElement('div');
+          tempDiv.innerHTML = getThemeDropdownIconHTML();
+          var newIcon = tempDiv.firstElementChild;
+          dropdownBtn.replaceChild(newIcon, btnFirstSvg);
+        }
+        if (btnIconSpan) btnIconSpan.textContent = getThemeLabel();
+        themeDropdown.classList.remove('is-open');
+        // Sync drawer button if open
+        var drawerBtn = document.querySelector('.drawer-theme-toggle');
+        if (drawerBtn) drawerBtn.innerHTML = getThemeButtonHTML();
+      };
+    });
+
+    // Close dropdown on outside click
+    document.addEventListener('click', function(e) {
+      if (!themeDropdown.contains(e.target)) {
+        themeDropdown.classList.remove('is-open');
+      }
+    });
+
     inner.appendChild(logo);
     inner.appendChild(navLinks);
-    inner.appendChild(navCta);
+    inner.appendChild(themeDropdown);
     inner.appendChild(hamburger);
     nav.appendChild(inner);
     return nav;
@@ -1560,12 +1826,11 @@
 
     var drawerFooter = document.createElement('div');
     drawerFooter.className = 'nav-drawer-footer';
-    var ctaBtn = document.createElement('a');
-    ctaBtn.href = '/download';
-    ctaBtn.className = 'btn btn-primary';
-    ctaBtn.textContent = 'Download APK';
-    ctaBtn.onclick = function(e) { closeDrawer(); window.navigate(e, '/download'); };
-    drawerFooter.appendChild(ctaBtn);
+    var themeBtn = document.createElement('button');
+    themeBtn.className = 'btn btn-secondary drawer-theme-toggle';
+    themeBtn.innerHTML = getThemeButtonHTML();
+    themeBtn.onclick = function() { cycleTheme(); themeBtn.innerHTML = getThemeButtonHTML(); };
+    drawerFooter.appendChild(themeBtn);
 
     drawer.appendChild(drawerHeader);
     drawer.appendChild(drawerLinks);
@@ -1877,11 +2142,11 @@
     var historyRows = versions.map(function(v) {
       return [
         '<tr>',
-          '<td>', v.v, v.isLatest ? '<span class="tag-new">Terbaru</span>' : '', '</td>',
-          '<td>', v.date, '</td>',
-          '<td>', v.changes[0], v.changes.length > 1 ? ' <span style="color:var(--text-muted)">+' + (v.changes.length - 1) + ' lainnya</span>' : '', '</td>',
-          '<td>', v.size, '</td>',
-          '<td><a class="dl-link" href="', v.url, '" download>&#8595; APK</a></td>',
+          '<td data-label="Versi">', v.v, v.isLatest ? '<span class="tag-new">Terbaru</span>' : '', '</td>',
+          '<td data-label="Tanggal">', v.date, '</td>',
+          '<td data-label="Perubahan">', v.changes[0], v.changes.length > 1 ? ' <span style="color:var(--text-muted)">+' + (v.changes.length - 1) + ' lainnya</span>' : '', '</td>',
+          '<td data-label="Ukuran">', v.size, '</td>',
+          '<td data-label="Download"><a class="dl-link" href="', v.url, '" download>&#8595; APK</a></td>',
         '</tr>'
       ].join('');
     }).join('');
@@ -2065,7 +2330,73 @@
     });
   }
 
+  // ─── Theme Management ──────────────────────────────────────
+  function initTheme() {
+    var savedMode = localStorage.getItem('aplikite-theme-mode') || 'system';
+    applyThemeMode(savedMode);
+  }
+
+  function getThemeButtonHTML() {
+    var mode = localStorage.getItem('aplikite-theme-mode') || 'system';
+    if (mode === 'dark') {
+      return '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:8px"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>Mode Gelap';
+    } else if (mode === 'light') {
+      return '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:8px"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>Mode Terang';
+    } else {
+      return '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:8px"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>Mode Sistem';
+    }
+  }
+
+  function applyThemeMode(mode) {
+    localStorage.setItem('aplikite-theme-mode', mode);
+    var theme;
+    if (mode === 'system') {
+      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      theme = prefersDark ? 'dark' : 'light';
+    } else {
+      theme = mode;
+    }
+    document.documentElement.setAttribute('data-theme', theme);
+  }
+
+  function cycleTheme() {
+    var currentMode = localStorage.getItem('aplikite-theme-mode') || 'system';
+    var newMode;
+    if (currentMode === 'system') {
+      newMode = 'dark';
+    } else if (currentMode === 'dark') {
+      newMode = 'light';
+    } else {
+      newMode = 'system';
+    }
+    applyThemeMode(newMode);
+  }
+
+  function getThemeLabel() {
+    var mode = localStorage.getItem('aplikite-theme-mode') || 'system';
+    if (mode === 'dark') return 'Gelap';
+    if (mode === 'light') return 'Terang';
+    return 'Sistem';
+  }
+
+  function getThemeDropdownIconHTML() {
+    var mode = localStorage.getItem('aplikite-theme-mode') || 'system';
+    if (mode === 'dark') {
+      return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>';
+    } else if (mode === 'light') {
+      return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>';
+    } else {
+      return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>';
+    }
+  }
+
+  function getActiveClass(mode) {
+    var current = localStorage.getItem('aplikite-theme-mode') || 'system';
+    return current === mode ? ' is-active' : '';
+  }
+
   // ─── Boot ─────────────────────────────────────────────────
+  initTheme();
   route();
 
 })();
